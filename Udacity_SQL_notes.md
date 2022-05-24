@@ -26,7 +26,7 @@ non-numeric data needs single quotes
 - % is wild card 
 - IN allows you to perform operations similar to using WHERE and =, but for more than one condition.  
 - NOT is used with IN and LIKE to select all of the rows NOT LIKE or NOT IN a certain condition.  
-- AND allssw you to combine operations where all combined conditions must be true. Has to contain independant logical statements.
+- AND allows you to combine operations where all combined conditions must be true. Has to contain independant logical statements.
 - BETWEEN is a cleaner version to avoid two AND statements when it's a range on the same column.
 - OR allows you to combine operations where at least one of the combined conditions must be true.  
 
