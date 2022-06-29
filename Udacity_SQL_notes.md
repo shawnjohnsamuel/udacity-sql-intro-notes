@@ -111,3 +111,17 @@ non-numeric data needs single quotes
 - CTE's get alias just like subquiries 
 - WITH alias AS (subquery) is syntax
 - you can create multiple tables in WITH separated by comma
+
+#
+# LESSON 5: Data Cleaning
+- SELECT LEFT(_column_, _number_) AS _alias_ will return a string with specific length from the left of another string column
+- SELECT RIGHT() does same
+- LENGTH() can be used as a function to return length of a string for each row of a specified column as a number
+- POSITION('_character_', _column_) gives the position of the character in the string as a number. Indexing in SQL starts with 1 as opposed to 0 like in python
+- STRPOS(_column_,'_character_') does same thing as POSITION() but different syntax. Both of these options are case sensative.
+- SUBSTR(_column_, _position_, _numberofcharacters_) i sused to extract a specific number of characters from a particular position of a string
+- UPPER() and LOWER() change the chase of the characters in string
+- CONCAT() and || can both combine strings. Use ' ' to include a space
+- DATE_PART('month', TO_DATE(month, 'month')) here changed a month name into the number associated with that particular month.
+- CAST(date_column AS DATE), you can use date_column::DATE both change the string or into into date
+- COALESCE() is used to deal with nulls. In general it returns the first non_NULL value passed for each row. You can also pass a second argument explicitly states what to pu instead of NULL.

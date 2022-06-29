@@ -226,3 +226,106 @@ WITH t1 AS (
     HAVING AVG(total_amt_usd) > (SELECT * FROM t1))
     
 SELECT AVG(avg) FROM t2
+
+
+/* 
+
+5 Introduction to SQL Data Cleaning
+
+5.3 Quiz: LEFT & RIGHT
+
+5.3.1 */
+
+SELECT RIGHT(website, 3) as webend, COUNT(*)
+FROM accounts
+GROUP BY webend
+
+/* 5.3.2 */
+
+SELECT LEFT(name, 1) as start_letter, COUNT(*)
+FROM accounts
+GROUP BY 1
+ORDER BY 2 DESC
+
+/* 5.3.3 */
+
+SELECT SUM(num) as num, SUM(letter) as letter
+FROM
+    (SELECT name,
+        CASE
+            WHEN LEFT(name, 1) IN ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+            THEN 1 
+            ELSE 0 
+            END AS num,
+        CASE
+            WHEN LEFT(name, 1) IN ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+            THEN 0 
+            ELSE 1 
+            END AS letter
+    FROM accounts) as t1
+
+/* 5.3.4 */
+
+
+
+SELECT SUM(vowel) as vowel, SUM(not_vowel) as not_vowel
+FROM
+    (SELECT name,
+        CASE
+            WHEN LEFT(LOWER(name), 1) IN ('a', 'e', 'i', 'o', 'u')
+            THEN 1 
+            ELSE 0 
+            END AS vowel,
+        CASE
+            WHEN LEFT(LOWER(name), 1) IN ('a', 'e', 'i', 'o', 'u')
+            THEN 0 
+            ELSE 1 
+            END AS not_vowel
+    FROM accounts) as t1
+
+/* 5.6 Quiz: POSITION, STRPOS & SUBSTR
+
+5.6.1 */
+
+SELECT LEFT(primary_poc, STRPOS(primary_poc, ' ')-1) AS first_name,
+       RIGHT(primary_poc, LENGTH(primary_poc) - STRPOS(primary_poc, ' ')) AS last_name
+FROM accounts
+
+
+/* 5.6.2 */
+
+SELECT LEFT(name, STRPOS(name, ' ')-1) AS first_name,
+       RIGHT(name, LENGTH(name) - STRPOS(name, ' ')) AS last_name
+FROM sales_reps
+
+/* 5.9 Quiz: CONCAT
+
+5.9.2 Each company in the accounts table wants to create an email address for each primary_poc. The email address should be the first name of the primary_poc . last name primary_poc @ company name .com */
+
+SELECT LEFT(LOWER(primary_poc), STRPOS(primary_poc, ' ')-1) || '.' ||
+       RIGHT(LOWER(primary_poc), LENGTH(primary_poc) - STRPOS(primary_poc, ' ')) || '@' ||
+       LOWER(REPLACE(name,' ','')) || '.com' AS email
+FROM accounts
+
+/* 5.9.3 We would also like to create an initial password, which they will change after their first log in. The first password will be the first letter of the primary_poc's first name (lowercase), then the last letter of their first name (lowercase), the first letter of their last name (lowercase), the last letter of their last name (lowercase), the number of letters in their first name, the number of letters in their last name, and then the name of the company they are working with, all capitalized with no spaces. */
+
+
+SELECT LEFT(LOWER(primary_poc),1)
+       RIGHT(LEFT(LOWER(primary_poc), STRPOS(primary_poc, ' ')-1),1)
+FROM accounts
+
+
+/* 5.15 */
+
+
+1. SELECT *
+FROM accounts a
+LEFT JOIN orders o
+ON a.id = o.account_id
+WHERE o.total IS NULL;
+
+2. SELECT COALESCE(o.id, a.id), a.*, o.*
+FROM accounts a
+LEFT JOIN orders o
+ON a.id = o.account_id
+WHERE o.total IS NULL;
